@@ -99,9 +99,7 @@ class App extends Component {
 
     showOptions(){
         if (this.state.contador<2) {
-            this.setState({
-              selected:false
-            });
+            this.state.selected=false;
             return (
                 <div className="row">
                     <div className="col-md-2"></div>
