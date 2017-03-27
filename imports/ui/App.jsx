@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 //import './App.css';
 import Image from './image';
 import Features from './features';
@@ -7,7 +7,9 @@ import VideoPlayer from './videoPlayer';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import YTSearch from 'youtube-api-search';
-
+import {Comentarios} from '../api/Back.js';
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
+import { createContainer } from 'meteor/react-meteor-data';
 
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
@@ -27,10 +29,12 @@ class App extends Component {
         };
     }
 
+
+
     getObjetos(keyword) {
         this.state.data = [];
         this.state.selected = true;
-        axios.get('/' + keyword)
+        Meteor.call('comentarios.buscar', keyword)
             .then(response => {
                 this.setState({data: response.data.items});
                 var array = [];
@@ -134,6 +138,7 @@ class App extends Component {
                     <div className="col-md-8">
 
                         <br></br>
+                        <AccountsUIWrapper />
 
                         <input type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
@@ -149,6 +154,7 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
+
                 <br></br>
 
                 <p>{this.showInstructions()}</p>
@@ -182,6 +188,9 @@ class App extends Component {
         );
     }
 }
+App.propTypes = {
 
+    currentUser: PropTypes.object,
+};
 
 export default App;
