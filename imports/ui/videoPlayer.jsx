@@ -5,7 +5,7 @@ class  VideoPlayer extends Component{
 
     render(){
             return(
-                <div></div>
+                <div>Aqui van los vieos</div>
             );
     }
 

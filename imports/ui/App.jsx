@@ -34,24 +34,12 @@ class App extends Component {
     getObjetos(keyword) {
         this.state.data = [];
         this.state.selected = true;
-        Meteor.call('comentarios.buscar', keyword)
-            .then(response => {
-                this.setState({data: response.data.items});
-                var array = [];
-                for (var i = 0; i < response.data.items.length; i++) {
-                    axios.get('/item/' + response.data.items[i].itemId)
-                        .then(response => {
-                            array.push(response.data);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        })
-                }
-                this.setState({brands: array});
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+        Meteor.call("walmart.search", keyword, (err, res) => {
+        if (err) { console.log(err); }
+        console.log("made it!");
+        console.log(res.items);
+        this.setState({data: res.items});
+      });
         console.log(this.state.data);
         console.log(this.state.brands);
         console.log(this.state.selected);
@@ -85,13 +73,10 @@ class App extends Component {
         }
     }
 
-    loggedin()
-    {
-        if (Meteor.currentUser()|| Meteor.currentUser()!=null )
+    loggedin() {
+        if (Meteor.currentUser!==null)
         {
             return(
-            <div className="row">
-                  <div className="col-md-2 center"></div>
                     <div className="col-md-8 center comentarios">
                     <input type="text" id="comments" className="form-control" placeholder="escribe..." />
                         <br/>
@@ -100,17 +85,12 @@ class App extends Component {
                     </button>
                         <br/>
                     <Comments comments={this.state.comments}/>
-            
-             </div>
-
-            </div>
+                    </div>
             );
-        }
-        else {
+        }else {
             return(
                 <div className="col-md-8 center comentarios">
-                <p>Por favor inicie sesion para usar esta funcion</p>
-               
+                <p>Por favor inicie sesion para usar esta función</p>
                 </div>
                 );
 
@@ -119,6 +99,9 @@ class App extends Component {
 
     showOptions(){
         if (this.state.contador<2) {
+            this.setState({
+              selected:false
+            });
             return (
                 <div className="row">
                     <div className="col-md-2"></div>
@@ -160,7 +143,7 @@ class App extends Component {
             document.getElementById("comments").value = "";
         }
     }
-      
+
 
 
     render() {
@@ -171,7 +154,7 @@ class App extends Component {
                     <div className="col-md-8">
 
                         <br></br>
-<AccountsUIWrapper />
+                        <AccountsUIWrapper />
                         <input type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
                         <div className="row">
@@ -191,6 +174,7 @@ class App extends Component {
                 <p>{this.showInstructions()}</p>
                 <p>{this.showOptions()}</p>
 
+                <div className="row">
                 <div className="col-md-2"></div>
                 <div className="col-md-4 center">
                     <Features detalles={this.state.selectedA}/>
@@ -201,14 +185,15 @@ class App extends Component {
                     <VideoPlayer/>
                 </div>
                 <div className="col-md-2"></div>
-
+                </div>
                 <br/>
                 <br/>
                 <div className="antesComment"><br></br><h2>Cuentanos de tu experiencia</h2></div>
                 <br></br><br></br><br></br>
                 <div className="row">
-                  {this.loggedin()}
-                  </div>
+                <div className="col-md-2"></div>
+                <p class="center">{this.loggedin()}</p>
+                </div>
             </div>
         );
     }
