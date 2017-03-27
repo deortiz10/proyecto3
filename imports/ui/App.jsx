@@ -85,6 +85,38 @@ class App extends Component {
         }
     }
 
+    loggedin()
+    {
+        if (Meteor.currentUser()|| Meteor.currentUser()!=null )
+        {
+            return(
+            <div className="row">
+                  <div className="col-md-2 center"></div>
+                    <div className="col-md-8 center comentarios">
+                    <input type="text" id="comments" className="form-control" placeholder="escribe..." />
+                        <br/>
+                    <button id="botonComments" className="btn btn-success btn-block" onClick={()=> this.comment()}>
+                        Comentar
+                    </button>
+                        <br/>
+                    <Comments comments={this.state.comments}/>
+            
+             </div>
+
+            </div>
+            );
+        }
+        else {
+            return(
+                <div className="col-md-8 center comentarios">
+                <p>Por favor inicie sesion para usar esta funcion</p>
+               
+                </div>
+                );
+
+        }
+    }
+
     showOptions(){
         if (this.state.contador<2) {
             return (
@@ -128,6 +160,7 @@ class App extends Component {
             document.getElementById("comments").value = "";
         }
     }
+      
 
 
     render() {
@@ -138,8 +171,7 @@ class App extends Component {
                     <div className="col-md-8">
 
                         <br></br>
-                        <AccountsUIWrapper />
-
+<AccountsUIWrapper />
                         <input type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
                         <div className="row">
@@ -154,7 +186,6 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-
                 <br></br>
 
                 <p>{this.showInstructions()}</p>
@@ -173,24 +204,15 @@ class App extends Component {
 
                 <br/>
                 <br/>
+                <div className="antesComment"><br></br><h2>Cuentanos de tu experiencia</h2></div>
+                <br></br><br></br><br></br>
                 <div className="row">
-                    <div className="col-md-8 center comentarios">
-                    <input type="text" id="comments" className="form-control" placeholder="Comentanos tu experiencia" />
-                        <br/>
-                    <button className="btn btn-success btn-block" onClick={()=> this.comment()}>
-                        agregar
-                    </button>
-                        <br/>
-                    <Comments comments={this.state.comments}/>
-                    </div>
-                </div>
+                  {this.loggedin()}
+                  </div>
             </div>
         );
     }
 }
-App.propTypes = {
 
-    currentUser: PropTypes.object,
-};
 
 export default App;
