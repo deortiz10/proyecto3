@@ -10,6 +10,9 @@ import YTSearch from 'youtube-api-search';
 import {Comentarios} from '../api/Back.js';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import { createContainer } from 'meteor/react-meteor-data';
+import Comparacion from './comparacion';
+import {Comparaciones} from '../api/comparaciones.js';
+
 
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
@@ -28,7 +31,25 @@ class App extends Component {
             comments:[]
         };
     }
+getComp1(){
+var fullarray = [this.state.selectedA, this.state.selectedB];
+return fullarray;
+}
 
+
+renderComp()
+{
+var array= this.getComp1();
+  if (array[0]== null)
+  {
+   return;
+  }
+  
+  return this.getComp1().map((comparacion) => (
+  <Comparacion key= {comparacion.itemId} comparacion={comparacion}/>
+  ))
+
+}
 
 
     getObjetos(keyword) {
@@ -191,11 +212,24 @@ class App extends Component {
                 <div className="row">
                 <div className="col-md-2"></div>
                 <p class="center">{this.loggedin()}</p>
+                <ul>
+                {this.renderComp()}
+
+                </ul>
                 </div>
             </div>
         );
     }
 }
+App.propTypes = {
+comparaciones: PropTypes.array.isRequired,
+incompleteCount: PropTypes.number.isRequired,
 
+}
 
-export default App;
+export default createContainer (() => {
+return {
+
+comparaciones: Comparaciones.find({}).fetch(),};
+
+},App);

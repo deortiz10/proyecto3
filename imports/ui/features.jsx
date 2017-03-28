@@ -9,7 +9,7 @@ class  Features extends Component{
                     <img src={this.props.detalles.thumbnailImage} alt={this.props.detalles.name}/>
                     <h5>Nombre: {this.props.detalles.name}</h5>
                     <p>Descripción: {this.props.detalles.shortDescription}</p>
-                    <p>Precio: {this.props.detalles.salePrice}</p>
+                    <p>Precio: $ {this.props.detalles.salePrice}</p>
                 </div>
             );
         }else
