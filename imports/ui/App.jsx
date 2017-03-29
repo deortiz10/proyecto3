@@ -40,11 +40,32 @@ return fullarray;
 renderComp()
 {
 var array= this.getComp1();
-  if (array[0]== null)
+  if (array[0]== null || array[1]==null)
   {
    return;
   }
-  
+  var Itemid1 =array[0].itemId;
+  var name1 =array[0].name;
+  var des1 = array[0].shortDescription;
+  var price1 = array[0].salePrice;
+
+  var Itemid2 =array[1].itemId;
+  var name2 =array[1].name;
+  var des2 = array[1].shortDescription;
+  var price2 = array[1].salePrice;
+
+  Comparaciones.insert({
+    Itemid1,
+    name1,
+    des1,
+    price1,
+    Itemid2,
+    name2,
+    des2,
+    price2,
+    owner: Meteor.userId(),           // _id of logged in user
+    username: Meteor.user().username,  // username of logged in user
+  });
   return this.getComp1().map((comparacion) => (
   <Comparacion key= {comparacion.itemId} comparacion={comparacion}/>
   ))
@@ -177,6 +198,7 @@ var array= this.getComp1();
                         <input type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
                         <div className="row">
+
                             <div className="col-md-2"></div>
                             <div className="col-md-8">
                                 <button className="btn btn-info btn-block" onClick={(evt) => {
@@ -212,10 +234,11 @@ var array= this.getComp1();
                 <div className="row">
                 <div className="col-md-2"></div>
                 <p class="center">{this.loggedin()}</p>
-                <ul>
+   { this.props.currentUser ?
+<ul>
                 {this.renderComp()}
-
-                </ul>
+</ul> : ''
+                }
                 </div>
             </div>
         );
@@ -224,12 +247,15 @@ var array= this.getComp1();
 App.propTypes = {
 comparaciones: PropTypes.array.isRequired,
 incompleteCount: PropTypes.number.isRequired,
+ currentUser: PropTypes.object,
 
-}
+};
 
 export default createContainer (() => {
 return {
 
-comparaciones: Comparaciones.find({}).fetch(),};
-
+comparaciones: Comparaciones.find({}).fetch(),
+incompleteCount: Comparaciones.find({ checked: { $ne: true } }).count(),
+    currentUser: Meteor.user(),
+    };
 },App);

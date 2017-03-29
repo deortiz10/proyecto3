@@ -5,7 +5,9 @@ export default class Comparacion extends Component
   render()
   {
   return (
-  <li>{this.props.comparacion.name}</li>
+  <li><span className="text">
+          <strong>{this.props.task.username}</strong>: {this.props.comparacion.nombre}
+        </span>}</li>
   );
   }
 }
