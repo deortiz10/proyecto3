@@ -6,7 +6,16 @@ export default class Comparacion extends Component
   {
   return (
   <li><span className="text">
-          <strong>{this.props.task.username}</strong>: {this.props.comparacion.nombre}
+          <strong>{this.props.comparacion.username}</strong>:
+      {this.props.comparacion.name1}
+      {this.props.comparacion.des1}
+      {this.props.comparacion.price1}
+     <strong> VS</strong>
+      {this.props.comparacion.name2}
+      {this.props.comparacion.des2}
+      {this.props.comparacion.price2}
+
+
         </span>}</li>
   );
   }

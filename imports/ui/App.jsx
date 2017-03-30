@@ -10,9 +10,9 @@ import YTSearch from 'youtube-api-search';
 import {Comentarios} from '../api/Back.js';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import { createContainer } from 'meteor/react-meteor-data';
-import Comparacion from './comparacion';
+import Comparacion from './comparacion.jsx';
 import {Comparaciones} from '../api/comparaciones.js';
-
+import { Meteor } from 'meteor/meteor';
 
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
@@ -28,7 +28,8 @@ class App extends Component {
             selectedA: null,
             selectedB: null,
             contador:0,
-            comments:[]
+            comments:[],
+            insertado: false
         };
     }
 getComp1(){
@@ -44,38 +45,46 @@ var array= this.getComp1();
   {
    return;
   }
-  var Itemid1 =array[0].itemId;
-  var name1 =array[0].name;
-  var des1 = array[0].shortDescription;
-  var price1 = array[0].salePrice;
+  if(this.state.insertado===false)
+  {
+      const Itemid1 =array[0].itemId;
+      const name1 =array[0].name;
 
-  var Itemid2 =array[1].itemId;
-  var name2 =array[1].name;
-  var des2 = array[1].shortDescription;
-  var price2 = array[1].salePrice;
+      const price1 = array[0].salePrice;
+      var des1 = array[0].shortDescription;
+      const Itemid2 =array[1].itemId;
+      const name2 =array[1].name;
+      var des2 = array[1].shortDescription;
+      const price2 = array[1].salePrice;
+      if( array[0].shortDescription===null)
+      {
+          des1="No disponible";
+      }
+      if(array[1].shortDescription===null )
+      {
+          des2="No disponible";
+      }
 
-  Comparaciones.insert({
-    Itemid1,
-    name1,
-    des1,
-    price1,
-    Itemid2,
-    name2,
-    des2,
-    price2,
-    owner: Meteor.userId(),           // _id of logged in user
-    username: Meteor.user().username,  // username of logged in user
-  });
-  return this.getComp1().map((comparacion) => (
+      Meteor.call('comparaciones.insert', Itemid1, name1, des1, price1, Itemid2, name2, des2, price2);
+
+      this.state.insertado=true;
+  }
+
+
+
+  return this.props.comparaciones.map((comparacion) => (
   <Comparacion key= {comparacion.itemId} comparacion={comparacion}/>
   ))
 
 }
 
 
+
+
     getObjetos(keyword) {
         this.state.data = [];
         this.state.selected = true;
+        this.state.contador=0;
         Meteor.call("walmart.search", keyword, (err, res) => {
         if (err) { console.log(err); }
         console.log("made it!");
@@ -113,6 +122,10 @@ var array= this.getComp1();
                 </div>
             );
         }
+    }
+    recomendacionUltimoP( )
+    {
+        var ultimo = Comparaciones.find().limit(1).sort({$natural:-1})
     }
 
     loggedin() {
@@ -252,6 +265,8 @@ incompleteCount: PropTypes.number.isRequired,
 };
 
 export default createContainer (() => {
+
+    Meteor.subscribe('comparaciones');
 return {
 
 comparaciones: Comparaciones.find({}).fetch(),
