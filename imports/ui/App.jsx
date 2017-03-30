@@ -56,11 +56,11 @@ var array= this.getComp1();
       const name2 =array[1].name;
       var des2 = array[1].shortDescription;
       const price2 = array[1].salePrice;
-      if( array[0].shortDescription===null)
+      if( des1.equals(null))
       {
           des1="No disponible";
       }
-      if(array[1].shortDescription===null )
+      if(des2.equals(null))
       {
           des2="No disponible";
       }
@@ -125,7 +125,15 @@ var array= this.getComp1();
     }
     recomendacionUltimoP( )
     {
-        var ultimo = Comparaciones.find().limit(1).sort({$natural:-1})
+        var ultimo = Comparaciones.find().limit(1).sort({$natural:-1}).Itemid1;
+        array1 = [];
+        Meteor.call("walmart.recomend", ultimo, (err, res) => {
+            if (err) { console.log(err); }
+            console.log("made it!");
+            console.log(res.items);
+            array1= res.items;
+        });
+
     }
 
     loggedin() {
@@ -151,6 +159,7 @@ var array= this.getComp1();
 
         }
     }
+
 
     showOptions(){
         if (this.state.contador<2) {
@@ -192,9 +201,13 @@ var array= this.getComp1();
             var text = document.getElementById("comments").value;
             var arrayC = this.state.comments;
             arrayC.push(text);
+            Meteor.call('comments.insert', text);
             this.setState({comments:arrayC});
             document.getElementById("comments").value = "";
         }
+        return this.props.comments.map((comments) => (
+            <comments key= {comments.comentar} comments={comments}/>
+        ))
     }
 
 
@@ -259,6 +272,7 @@ var array= this.getComp1();
 }
 App.propTypes = {
 comparaciones: PropTypes.array.isRequired,
+comments: PropTypes.array.isRequired,
 incompleteCount: PropTypes.number.isRequired,
  currentUser: PropTypes.object,
 
@@ -271,6 +285,8 @@ return {
 
 comparaciones: Comparaciones.find({}).fetch(),
 incompleteCount: Comparaciones.find({ checked: { $ne: true } }).count(),
+    comments: Comentarios.find({}).fetch(),
+
     currentUser: Meteor.user(),
     };
 },App);

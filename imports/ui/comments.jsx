@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes } from 'react';
 
 class Comments extends Component{
 
@@ -6,13 +6,7 @@ class Comments extends Component{
         if(this.props.comments){
             return(
                 <div className="center">
-                    {this.props.comments.map(comment => {
-                        return (
-                            <div className="comment">
-                                <p>{comment}</p>
-                            </div>
-                        );
-                    })}
+                    {this.props.comments.comentar}
                 </div>
             );
         }else{
@@ -24,4 +18,8 @@ class Comments extends Component{
         }
     }
 }
+
+Comments.propTypes= {
+    comments: PropTypes.object.isRequired,
+};
 export default Comments;

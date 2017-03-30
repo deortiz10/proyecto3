@@ -32,29 +32,39 @@ var connectHandler = WebApp.connectHandlers ;
 
 //})
 const url = 'mongodb://admin:admin@ds119380.mlab.com:19380/pickdb';
-const esquema = new schema({
-    Objeto1:  String,
-    marca1: String,
-    Objeto2:  String,
-    marca2: String,
-    selected:   String,
-    comments: [{ content: String, date: Date }],
-    date: { type: Date, default: Date.now }
-});
-//app.use(cors());
+
+if (Meteor.isServer) {
+    // This code only runs on the server
+    Meteor.publish('comments', function tasksPublication() {
+        return Comentarios.find();
+    });
+}
 Meteor.methods({
-    'comentarios.buscar': function(query)
-    {
-        walmart.search(query).then(function(data)
-        {
-            for (var i = 0; i < data.items.length; i++) {
-                console.log('- name: ' + data.items[i].name);
-                console.log('- price: ' + data.items[i].salePrice);
-            }
-            res.send(data);
+
+    'comments.insert'(comentar){
+
+
+        check(comentar, String);
+
+        if (! Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Comentarios.insert({
+           comentar,
+            owner: Meteor.userId(),           // _id of logged in user
+            username: Meteor.user().username,  // username of logged in user
         });
+
+
+
+
+
+
     }
-})
+
+
+});
 function getComparaciones(query) {
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
