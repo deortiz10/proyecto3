@@ -48,6 +48,7 @@ var array= this.getComp1();
   if(this.state.insertado===false)
   {
       const Itemid1 =array[0].itemId;
+      console.log(Itemid1);
       const name1 =array[0].name;
 
       const price1 = array[0].salePrice;
@@ -123,26 +124,23 @@ var array= this.getComp1();
             );
         }
     }
-    recomendacionUltimoP( ){
-      console.log("Entro sin error!");
-        var ultimo = Comparaciones.find().limit(1).sort({$natural:-1}).Itemid1;
-        array1 = [];
-        if(ultimo !== null){
-          Meteor.call("recommendations", ultimo, (err, res) => {
+    recomendacionUltimoP(searched){
+      //var ultimo = this.Comparaciones.find().limit(1).sort({$natural:-1}).Itemid1;
+      var array1 = [];
+          Meteor.call("recommendations", searched, (err, res) => {
               if (err) { console.log(err); }
               console.log("made it!");
               console.log(res.items);
               array1= res.items;
               });
-        }
     }
 
     loggedin() {
         if (Meteor.userId()!==null)
         {
-        recomendacionUltimoP( )
             return(
                     <div className="row">
+                    {this.recomendacionUltimoP( )}
                     <div className="col-md-8">
                     <input aria-label="comment area" type="text" id="comments" className="form-control" placeholder="escribe..." />
                         <br/>

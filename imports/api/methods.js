@@ -16,11 +16,11 @@ Meteor.methods({
 
     "recommendations"(query) {
         console.log("Recomend walmart");
+				console.log(query);
         check(query, String);
-        //let myWalmart = walmart(process.env.WALMART_API_KEY);
-        let myWalmart = walmart('acc828nd6mdxeqwqt7fz5s7m');
+				let myWalmart = walmart('acc828nd6mdxeqwqt7fz5s7m');
         // Return the promise
-        return recommendations(query);
+        return myWalmart.recommendations(query);
     }
 
 });
