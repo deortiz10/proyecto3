@@ -56,11 +56,11 @@ var array= this.getComp1();
       const name2 =array[1].name;
       var des2 = array[1].shortDescription;
       const price2 = array[1].salePrice;
-      if( des1.equals(null))
+      if(!des1)
       {
           des1="No disponible";
       }
-      if(des2.equals(null))
+      if(!des2)
       {
           des2="No disponible";
       }
@@ -123,25 +123,28 @@ var array= this.getComp1();
             );
         }
     }
-    recomendacionUltimoP( )
-    {
+    recomendacionUltimoP( ){
+      console.log("Entro sin error!");
         var ultimo = Comparaciones.find().limit(1).sort({$natural:-1}).Itemid1;
         array1 = [];
-        Meteor.call("walmart.recomend", ultimo, (err, res) => {
-            if (err) { console.log(err); }
-            console.log("made it!");
-            console.log(res.items);
-            array1= res.items;
-        });
-
+        if(ultimo !== null){
+          Meteor.call("recommendations", ultimo, (err, res) => {
+              if (err) { console.log(err); }
+              console.log("made it!");
+              console.log(res.items);
+              array1= res.items;
+              });
+        }
     }
 
     loggedin() {
-        if (Meteor.currentUser!==null)
+        if (Meteor.userId()!==null)
         {
+        recomendacionUltimoP( )
             return(
-                    <div className="col-md-8 center comentarios">
-                    <input type="text" id="comments" className="form-control" placeholder="escribe..." />
+                    <div className="row">
+                    <div className="col-md-8">
+                    <input aria-label="comment area" type="text" id="comments" className="form-control" placeholder="escribe..." />
                         <br/>
                     <button id="botonComments" className="btn btn-success btn-block" onClick={()=> this.comment()}>
                         Comentar
@@ -149,11 +152,16 @@ var array= this.getComp1();
                         <br/>
                     <Comments comments={this.state.comments}/>
                     </div>
+                    <div className="col-md-2"></div>
+                    </div>
             );
         }else {
             return(
+                <div claaName="row">
                 <div className="col-md-8 center comentarios">
                 <p>Por favor inicie sesion para usar esta función</p>
+                </div>
+                <div className="col-md-2"></div>
                 </div>
                 );
 
@@ -197,7 +205,9 @@ var array= this.getComp1();
     }
 
     comment(){
-        if(document.getElementById("comments").value !== null){
+        var comment = document.getElementById("comments").value
+        if( comment !== null){
+            console.log(comment);
             var text = document.getElementById("comments").value;
             var arrayC = this.state.comments;
             arrayC.push(text);
@@ -221,13 +231,13 @@ var array= this.getComp1();
 
                         <br></br>
                         <AccountsUIWrapper />
-                        <input type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
+                        <input aria-label="Search area" type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
                         <div className="row">
 
                             <div className="col-md-2"></div>
                             <div className="col-md-8">
-                                <button className="btn btn-info btn-block" onClick={(evt) => {
+                                <button id="busqueda" className="btn btn-info btn-block" onClick={(evt) => {
                                     this.getObjetos(document.getElementById("text").value)
                                 }}>
                                     buscar productos
@@ -255,15 +265,15 @@ var array= this.getComp1();
                 </div>
                 <br/>
                 <br/>
-                <div className="antesComment"><br></br><h2>Cuentanos de tu experiencia</h2></div>
+                <div className="antesComment"><h2>Cuentanos de tu experiencia</h2></div>
                 <br></br><br></br><br></br>
                 <div className="row">
                 <div className="col-md-2"></div>
                 <p class="center">{this.loggedin()}</p>
-   { this.props.currentUser ?
-<ul>
+                { this.props.currentUser ?
+                <ul>
                 {this.renderComp()}
-</ul> : ''
+                </ul> : ''
                 }
                 </div>
             </div>
@@ -275,7 +285,6 @@ comparaciones: PropTypes.array.isRequired,
 comments: PropTypes.array.isRequired,
 incompleteCount: PropTypes.number.isRequired,
  currentUser: PropTypes.object,
-
 };
 
 export default createContainer (() => {

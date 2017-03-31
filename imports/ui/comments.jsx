@@ -12,7 +12,7 @@ class Comments extends Component{
         }else{
             return(
                 <div>
-
+                  <p>No hay nada</p>
                 </div>
             );
         }

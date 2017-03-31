@@ -5,7 +5,10 @@ export default class Comparacion extends Component
   render()
   {
   return (
-  <li><span className="text">
+  <div className="row">
+  <div className="col-md-2"></div>
+  <div className="col-md-8">
+  <li><span className="text historial">
           <strong>{this.props.comparacion.username}</strong>:
       {this.props.comparacion.name1}
       {this.props.comparacion.des1}
@@ -14,9 +17,10 @@ export default class Comparacion extends Component
       {this.props.comparacion.name2}
       {this.props.comparacion.des2}
       {this.props.comparacion.price2}
-
-
-        </span>}</li>
+        </span></li>
+        </div>
+   <div className="col-md-2"></div>
+  </div>
   );
   }
 }
