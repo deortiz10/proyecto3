@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-//import './App.css';
 import Image from './image';
 import Features from './features';
+import Recomendacion from './recomendacion';
 import Comments from './comments';
-import VideoPlayer from './videoPlayer';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import YTSearch from 'youtube-api-search';
@@ -23,19 +22,18 @@ class App extends Component {
             data: [],
             selected: false,
             brands: [],
-            videosA: [],
-            videosB: [],
             selectedA: null,
             selectedB: null,
             contador:0,
             comments:[],
-            insertado: false
+            insertado: false,
+            recomendaciones: []
         };
     }
-getComp1(){
-var fullarray = [this.state.selectedA, this.state.selectedB];
-return fullarray;
-}
+    getComp1(){
+      var fullarray = [this.state.selectedA, this.state.selectedB];
+        return fullarray;
+    }
 
 
 renderComp()
@@ -48,9 +46,7 @@ var array= this.getComp1();
   if(this.state.insertado===false)
   {
       const Itemid1 =array[0].itemId;
-      console.log(Itemid1);
       const name1 =array[0].name;
-
       const price1 = array[0].salePrice;
       var des1 = array[0].shortDescription;
       const Itemid2 =array[1].itemId;
@@ -69,10 +65,11 @@ var array= this.getComp1();
       Meteor.call('comparaciones.insert', Itemid1, name1, des1, price1, Itemid2, name2, des2, price2);
 
       this.state.insertado=true;
+      console.log(Itemid1+"Esto es antes de hacer la peticion de recomentaciones")
+      {this.recomendaciones(Itemid1)}
+      console.log(Itemid1+"Esto es despues de las recomendaciones")
+      {this.reviews(Itemid1)}
   }
-
-
-
   return this.props.comparaciones.map((comparacion) => (
   <Comparacion key= {comparacion.itemId} comparacion={comparacion}/>
   ))
@@ -80,7 +77,13 @@ var array= this.getComp1();
 }
 
 
-
+    reviews(id){
+      Meteor.call("walmart.reviews", id, (err, res) => {
+        if (err) { console.log(err); }
+        console.log("made it!-reviews");
+        console.log(res);
+        });
+    }
 
     getObjetos(keyword) {
         this.state.data = [];
@@ -98,23 +101,6 @@ var array= this.getComp1();
     }
 
 
-    buscarVideoYoutubeA(term) {
-        YTSearch({key: API_KEY, term: term}, (videos) => {
-            this.setState({
-                videosA: videos[0]
-            });
-        });
-    }
-
-    buscarVideoYoutubeB(term) {
-        YTSearch({key: API_KEY, term: term}, (videos) => {
-            this.setState({
-                videosB: videos[0]
-            });
-        });
-    }
-
-
     showInstructions() {
         if (this.state.selected == true) {
             return (
@@ -124,15 +110,27 @@ var array= this.getComp1();
             );
         }
     }
-    recomendacionUltimoP(searched){
-      //var ultimo = this.Comparaciones.find().limit(1).sort({$natural:-1}).Itemid1;
-      var array1 = [];
+    recomendaciones(searched){
           Meteor.call("recommendations", searched, (err, res) => {
               if (err) { console.log(err); }
-              console.log("made it!");
-              console.log(res.items);
-              array1= res.items;
-              });
+              console.log("made it!-recomendaciones");
+              console.log(res);
+              this.state.recomendaciones = res
+              this.setState({recomendaciones: res});
+          });
+    }
+
+    mostrarRecomend(){
+    if(this.state.recomendaciones.length>0){
+        console.log("Y entonces??")
+        {this.state.recomendaciones.map(re => {
+            return(
+            <div>
+              <Recomendacion item={re}/>
+            </div>
+            );
+        })}
+    }
     }
 
     loggedin() {
@@ -140,7 +138,6 @@ var array= this.getComp1();
         {
             return(
                     <div className="row">
-                    {this.recomendacionUltimoP( )}
                     <div className="col-md-8">
                     <input aria-label="comment area" type="text" id="comments" className="form-control" placeholder="escribe..." />
                         <br/>
@@ -206,14 +203,13 @@ var array= this.getComp1();
         var comment = document.getElementById("comments").value
         if( comment !== null){
             console.log(comment);
-            var text = document.getElementById("comments").value;
             var arrayC = this.state.comments;
-            arrayC.push(text);
-            Meteor.call('comments.insert', text);
+            arrayC.push(comment);
+            Meteor.call('comments.insert', comment);
             this.setState({comments:arrayC});
             document.getElementById("comments").value = "";
         }
-        return this.props.comments.map((comments) => (
+        return this.state.comments.map((comments) => (
             <comments key= {comments.comentar} comments={comments}/>
         ))
     }
@@ -226,9 +222,9 @@ var array= this.getComp1();
                 <div className="row">
                     <div className="col-md-2"></div>
                     <div className="col-md-8">
-
                         <br></br>
                         <AccountsUIWrapper />
+                        <br></br>
                         <input aria-label="Search area" type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
                         <br></br>
                         <div className="row">
@@ -253,15 +249,15 @@ var array= this.getComp1();
                 <div className="col-md-2"></div>
                 <div className="col-md-4 center">
                     <Features detalles={this.state.selectedA}/>
-                    <VideoPlayer />
                 </div>
                 <div className="col-md-4 center">
                     <Features detalles={this.state.selectedB} />
-                    <VideoPlayer/>
                 </div>
                 <div className="col-md-2"></div>
                 </div>
                 <br/>
+                <br/>
+                <h1>{this.mostrarRecomend()}</h1>
                 <br/>
                 <div className="antesComment"><h2>Cuentanos de tu experiencia</h2></div>
                 <br></br><br></br><br></br>
