@@ -31,6 +31,7 @@ var connectHandler = WebApp.connectHandlers ;
     //return next();
 
 //})
+// Con esto publico les pueden formatear la base de datos y perder toda la informacio igual que con el API_KEY deberían tenerla como variable de entorno en heroku
 const url = 'mongodb://admin:admin@ds119380.mlab.com:19380/pickdb';
 
 if (Meteor.isServer) {
@@ -82,6 +83,3 @@ function getComparaciones(query) {
         });
     });
 }
-
-
-

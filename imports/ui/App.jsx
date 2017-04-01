@@ -6,6 +6,7 @@ import Comments from './comments';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import YTSearch from 'youtube-api-search';
+// a menos de que esten usando este componente para la legibilidad del código es bueno no tener cosas que no se usan.
 import {Comentarios} from '../api/Back.js';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import { createContainer } from 'meteor/react-meteor-data';
@@ -13,6 +14,8 @@ import Comparacion from './comparacion.jsx';
 import {Comparaciones} from '../api/comparaciones.js';
 import { Meteor } from 'meteor/meteor';
 
+
+//deberían agregar esta API_KEY como variable de entorno en Heroku, por el bien de uds no la dejen pública, menos para el repositorio
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
 
@@ -123,6 +126,7 @@ var array= this.getComp1();
     mostrarRecomend(){
     if(this.state.recomendaciones.length>0){
         console.log("Y entonces??")
+        // jajajajaja
         {this.state.recomendaciones.map(re => {
             return(
             <div>
@@ -293,3 +297,7 @@ incompleteCount: Comparaciones.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user(),
     };
 },App);
+
+// Se nota que le han trabajado bastante a la aplicación, hace como 3 días les hice el code review del proyecto 2 por error pero hay muchas cosas de
+//usabilidad y estilo que aún aplicacan para esta entrega, una de estas es el seleccionar cuantos objetos quisiera el cliente
+//y que dichos objetos los almacene en un carrito o algo similar. Si la iteran sería genial que implementaran eso. Buen trabajo
