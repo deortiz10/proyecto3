@@ -22,3 +22,5 @@ webapp
 accounts-ui
 accounts-password
 kadira:flow-router
+practicalmeteor:mocha
+practicalmeteor:chai
