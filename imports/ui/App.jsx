@@ -5,6 +5,7 @@ import Recomendacion from './recomendacion';
 import Comments from './comments';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+//remover imports que no se usan
 import YTSearch from 'youtube-api-search';
 import {Comentarios} from '../api/Back.js';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
@@ -12,7 +13,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Comparacion from './comparacion.jsx';
 import {Comparaciones} from '../api/comparaciones.js';
 import { Meteor } from 'meteor/meteor';
-
+// apikey como variable de entorno
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
 

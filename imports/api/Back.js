@@ -31,6 +31,8 @@ var connectHandler = WebApp.connectHandlers ;
     //return next();
 
 //})
+//deberían también dejar esto como variable de entorno, con esta url me puedo conectar y hacer cambios en la base de datos, asi como cualquiera que vea su repositorio, que es público
+
 const url = 'mongodb://admin:admin@ds119380.mlab.com:19380/pickdb';
 
 if (Meteor.isServer) {
@@ -82,6 +84,3 @@ function getComparaciones(query) {
         });
     });
 }
-
-
-
