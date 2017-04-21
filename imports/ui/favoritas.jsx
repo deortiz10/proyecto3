@@ -5,7 +5,7 @@ class Favoritas extends Component {
   constructor(props){
     super(props);
   }
-
+  //Para la imagen se podría usar un alt
   render() {
           return (
       <div>
