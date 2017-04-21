@@ -3,6 +3,7 @@ import Image from './image';
 import Features from './features';
 import Recomendacion from './recomendacion';
 import Comments from './comments';
+//Los siguientes imports no son utilizados
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import YTSearch from 'youtube-api-search';
@@ -12,7 +13,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Comparacion from './comparacion.jsx';
 import {Comparaciones} from '../api/comparaciones.js';
 import { Meteor } from 'meteor/meteor';
-
+//El API key no debería estar quemado y no es usado
 const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
         };
     }
     getComp1(){
+      //Se podría usar let
       var fullarray = [this.state.selectedA, this.state.selectedB];
         return fullarray;
     }
@@ -38,6 +40,7 @@ class App extends Component {
 
 renderComp()
 {
+  //Se podría usar let
 var array= this.getComp1();
   if (array[0]== null || array[1]==null)
   {
@@ -48,9 +51,11 @@ var array= this.getComp1();
       const Itemid1 =array[0].itemId;
       const name1 =array[0].name;
       const price1 = array[0].salePrice;
+    //Se podría usar let o const
       var des1 = array[0].shortDescription;
       const Itemid2 =array[1].itemId;
       const name2 =array[1].name;
+    //Se podría usar let o const
       var des2 = array[1].shortDescription;
       const price2 = array[1].salePrice;
       if(!des1)
@@ -65,9 +70,11 @@ var array= this.getComp1();
       Meteor.call('comparaciones.insert', Itemid1, name1, des1, price1, Itemid2, name2, des2, price2);
 
       this.state.insertado=true;
-      console.log(Itemid1+"Esto es antes de hacer la peticion de recomentaciones")
+      //Faltaba ;
+      console.log(Itemid1+"Esto es antes de hacer la peticion de recomentaciones");
       {this.recomendaciones(Itemid1)}
-      console.log(Itemid1+"Esto es despues de las recomendaciones")
+    //Faltaba ;
+      console.log(Itemid1+"Esto es despues de las recomendaciones");
       {this.reviews(Itemid1)}
   }
   return this.props.comparaciones.map((comparacion) => (
@@ -122,7 +129,8 @@ var array= this.getComp1();
 
     mostrarRecomend(){
     if(this.state.recomendaciones.length>0){
-        console.log("Y entonces??")
+        //Faltaba ;
+        console.log("Y entonces??");
         {this.state.recomendaciones.map(re => {
             return(
             <div>
@@ -200,9 +208,11 @@ var array= this.getComp1();
     }
 
     comment(){
-        var comment = document.getElementById("comments").value
+      //Faltaba ; y se podría usar let
+        var comment = document.getElementById("comments").value;
         if( comment !== null){
             console.log(comment);
+            //Se podría usar let
             var arrayC = this.state.comments;
             arrayC.push(comment);
             Meteor.call('comments.insert', comment);
@@ -215,7 +225,8 @@ var array= this.getComp1();
     }
 
 
-
+    //Los <br> que usa podrían ser remplazados usando margin o padding en css
+    //En un tag se uso class en vez de className
     render() {
         return (
             <div>
