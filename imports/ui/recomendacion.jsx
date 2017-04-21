@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class Recomendacion extends Component{
-
+    //Es recomendable que se use el alt apropiadamente
     render(){
         if(this.props.item){
             return(
