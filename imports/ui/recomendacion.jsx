@@ -17,7 +17,7 @@ class Recomendacion extends Component{
         {
             return(
                 <div>
-                No hay recomentaciones
+                No hay recomendaciones
                 </div>
             );
         }

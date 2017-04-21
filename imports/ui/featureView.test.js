@@ -1,15 +1,13 @@
-
 import React from 'react';
 import { shallow } from 'enzyme';
 import { chai } from 'meteor/practicalmeteor:chai';
-import comparacion from './comparacion.jsx';
+import features from './features.jsx';
 import Comparacion from "./comparacion";
-
-describe('Comparaciones', () => {
+import './App.jsx'
+describe('features', () => {
 
     beforeEach(() => {
         const userId = Random.id();
-
         Comparaciones.remove({});
         comparacionId= Comparaciones.insert({
             Itemid1: 1,
