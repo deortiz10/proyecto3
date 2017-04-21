@@ -2,11 +2,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { chai } from 'meteor/practicalmeteor:chai';
+//No se usa el import
 import comparacion from './comparacion.jsx';
 import Comparacion from "./comparacion";
-
+//Faltaba ; al final
 describe('Comparaciones', () => {
-
+    //Faltaba ; al final
     beforeEach(() => {
         const userId = Random.id();
         Comparaciones.remove({});
@@ -21,7 +22,7 @@ describe('Comparaciones', () => {
             price2: 222,
             owner: userId,           // _id of logged in user
             username: 'tmeasday',  // username of logged in user
-        })
+        });
         this.setUserId(userId);
     });
 
@@ -30,4 +31,4 @@ describe('Comparaciones', () => {
   chai.assert(comp.hasClass(comp.hasClass('text historial')));
   chai.assert(comp.hasClass(comp.hasClass('li')));
     })
-})
+});
