@@ -9,11 +9,11 @@ class Image extends Component {
   }
 
   selected(){
+      //Se podría usar var o let
       var producto = this.props.producto;
       console.log(producto);
       this.props.callFather(producto);
   }
-
 
   render() {
       if(this.props.producto){
