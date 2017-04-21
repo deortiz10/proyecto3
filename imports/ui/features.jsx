@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class  Features extends Component{
-
+    //Muy bien por el uso de alt en la imagen
     render(){
         if(this.props.detalles){
             return(
