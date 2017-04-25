@@ -139,7 +139,7 @@ var array= this.getComp1();
             return(
                     <div className="row">
                     <div className="col-md-8">
-                    <input aria-label="comment area" type="text" id="comments" className="form-control" placeholder="escribe..." />
+                    <input aria-label="comment area" type="text" id="comments" className="form-control" placeholder="write..." />
                         <br/>
                     <button id="botonComments" className="btn btn-success btn-block" onClick={()=> this.comment()}>
                         Comentar
@@ -191,11 +191,15 @@ var array= this.getComp1();
                 selectedA:producto
             });
             this.state.contador=1;
-        }else {
+        }else if(this.state.selectedA !== null && this.state.selectedA !== producto){
             this.setState({
                 selectedB:producto
             });
             this.state.contador=2;
+        }else{
+        return(
+          <span class="popuptext" id="myPopup">Select an other product from the same search</span>
+        )
         }
     }
 
@@ -225,13 +229,14 @@ var array= this.getComp1();
                         <br></br>
                         <AccountsUIWrapper />
                         <br></br>
-                        <input aria-label="Search area" type="text" id="text" className="form-control" placeholder="busca el objeto a comparar"/>
+                        <input aria-label="Search area" type="text" id="text" className="form-control" placeholder="Search products to compare"/>
                         <br></br>
                         <div className="row">
 
                             <div className="col-md-2"></div>
                             <div className="col-md-8">
                                 <button id="busqueda" className="btn btn-info btn-block" onClick={(evt) => {
+                                    this.setState({ selectedA:null, selectedB:null });
                                     this.getObjetos(document.getElementById("text").value)
                                 }}>
                                     buscar productos
@@ -259,7 +264,7 @@ var array= this.getComp1();
                 <br/>
                 <h1>{this.mostrarRecomend()}</h1>
                 <br/>
-                <div className="antesComment"><h2>Cuentanos de tu experiencia</h2></div>
+                <div className="antesComment"><h2>¿Qué opinas de la comparación?</h2></div>
                 <br></br><br></br><br></br>
                 <div className="row">
                 <div className="col-md-2"></div>
