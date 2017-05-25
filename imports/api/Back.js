@@ -22,7 +22,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 const MongoClient = require('mongodb').MongoClient
     , assert = require('assert');
-const walmart = require('walmart')('nw8qw3u8ja5qhtzwkz4ex9ws');
+const walmart = require('walmart')('');
 var connectHandler = WebApp.connectHandlers ;
 
 
