@@ -13,7 +13,7 @@ import Comparacion from './comparacion.jsx';
 import {Comparaciones} from '../api/comparaciones.js';
 import { Meteor } from 'meteor/meteor';
 
-const API_KEY = 'AIzaSyD7AeJ_fi01jWanRgPibiUCgWuSFb7nFkE';
+const API_KEY = '';
 class App extends Component {
 
     constructor(props) {
